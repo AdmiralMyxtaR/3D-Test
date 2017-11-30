@@ -1,5 +1,6 @@
 #include "ScreenSpaceTransformer.h"
 #include "globals.h"
+#include "Graphics.h"
 ScreenSpaceTransformer::ScreenSpaceTransformer(Vector2 & dims)
 {
 	this->dims = dims;
@@ -13,12 +14,7 @@ Vector2 ScreenSpaceTransformer::getPixelLocation(Vector3 & transformedVec)
 	arg.y = -arg.y;
 	arg.x += 1;
 	arg.y += 1;
-
-	//arg.z = 1;
-
-	Vector2 halfScreen = this->dims*0.5;
-	Vector2 ret = Vector2(arg)*halfScreen;
-	return ret;
+	return Vector2(arg)*globals::graphics->getScreenHeight();
 }
 
 std::pair<Vector2, Vector2> ScreenSpaceTransformer::getPixelLocation(Vector3 & v1, Vector3 & v2)

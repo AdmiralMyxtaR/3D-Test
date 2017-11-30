@@ -31,6 +31,7 @@ void Graphics::drawLine(Vector2 start, Vector2 end, Uint8 r, Uint8 g, Uint8 b)
 	double borderY = this->getScreenHeight(); 
 	int length = (end - start).length();
 	//if (length > 3840) std::cout << "s:" << start.x << "," << start.y << " e:" << end.x << "," << end.y << " l:" << length << "\n";
+	if (length > sqrt(1920*1920+1080*1080)) return; //TEMPORARY WORKAROUND FOR INSANELY BIG LINES, NEED TO IMPLEMENT OUT OF BOUNDS CULLING!!!
 	Vector2 step = (end - start) / double(length);
 	for (int i = 0; i < length; ++i)
 	{
