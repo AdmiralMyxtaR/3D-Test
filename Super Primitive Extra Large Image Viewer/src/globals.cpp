@@ -7,4 +7,5 @@ namespace globals
 	Vector3* cameraAngle;
 	VerticeList* verticeList;
 	double* fov;
+	Matrix3* rotationMatrix;
 }

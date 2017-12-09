@@ -23,4 +23,5 @@ private:
 	SDL_Window* window;
 	SDL_Surface* windowSurface;
 	Uint32 composeColor(Uint8 r, Uint8 g, Uint8 b);
+//	Matrix3 rotationMatrix;
 };

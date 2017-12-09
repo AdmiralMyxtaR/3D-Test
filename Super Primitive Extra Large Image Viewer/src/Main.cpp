@@ -21,6 +21,7 @@
 #include "globals.h"
 #include "ScreenSpaceTransformer.h"
 #include "VerticeList.h"
+#include <algorithm>
 Vector2 SCREEN_SIZE(1920,1080);
 
 double FPS_UPDATE_INTERVAL= 0.3333;
@@ -66,16 +67,31 @@ int main()
 		Vector3 dims(dx,dy,dz);
 		buildings.push_back(Building(pos, dims));
 	}*/
-
+	Vector3 min = Vector3(1,1,1)*INFINITY;
+	Vector3 max = -min;	
 	while (f)
 	{
+		Vector3 v[3];
 		f >> x >> y >> z;
-		Vector3 v1 = { x,y,z };
+		v[0] = { x,y,z };
 		f >> x >> y >> z;
-		Vector3 v2 = { x,y,z };
+		v[1] = { x,y,z };
 		f >> x >> y >> z;
-		Vector3 v3 = { x,y,z };
-		polygons.emplace_back(v1, v2, v3);
+		v[2] = { x,y,z };
+		polygons.emplace_back(v[0], v[1], v[2]);
+		for (int i = 0; i < 3; ++i)
+		{
+			min.x = std::min(min.x, v[i].x);
+			min.y = std::min(min.y, v[i].y);
+			min.z = std::min(min.z, v[i].z);
+			max.x = std::max(max.x, v[i].x);
+			max.y = std::max(max.y, v[i].y);
+			max.z = std::max(max.z, v[i].z);
+		}
+	}
+	for (auto& it : polygons)
+	{
+
 	}
 	/*for (int i = 0; i < 10; ++i)
 	{
@@ -115,7 +131,9 @@ int main()
 
 		cameraPos += cameraSpeed*currFrameTime;
 		lastFrameTime = chrono::high_resolution_clock::now();
-		verticeList.transform();
+		//verticeList.transform();
+		Matrix3 rot = getRotationMatrix(cameraAngle);
+		globals::rotationMatrix = &rot;
 	//	for (auto& it : buildings) it.draw(graphics.renderer, SCREEN_SIZE.y, cameraPos, cameraAngle);
 		for (auto& it : polygons) it.draw();
 		graphics.flip();
