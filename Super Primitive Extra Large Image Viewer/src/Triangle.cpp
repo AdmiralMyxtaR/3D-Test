@@ -42,15 +42,19 @@ std::tuple<const Vector3&, const Vector3&, const Vector3&> Triangle::getVertices
 }
 void Triangle::draw()
 {
-	Vector2 points[4];
-	double zValues[3];
-	for (int i = 0; i < 3; ++i)
+	double cameraDot = this->normal.dot(*globals::cameraPos);
+	if (cameraDot >= 0.0)
 	{
-		Vector3 screenSpace = *globals::rotationMatrix*(this->vertices[i]-*globals::cameraPos);
-		points[i] = globals::sst->getPixelLocation(screenSpace);	
+		Vector2 points[4];
+		double zValues[3];
+		for (int i = 0; i < 3; ++i)
+		{
+			Vector3 screenSpace = *globals::rotationMatrix*(this->vertices[i] - *globals::cameraPos);
+			points[i] = globals::sst->getPixelLocation(screenSpace);
+		}
+		points[3] = points[0];
+		for (int i = 0; i < 3; ++i) globals::graphics->drawLine(points[i], points[i + 1], 255, 255, 255);
 	}
-	points[3] = points[0];
-	for (int i = 0; i < 3; ++i) globals::graphics->drawLine(points[i], points[i + 1], 255, 255, 255);
 }
 
 Vector3 Triangle::createNormal()
