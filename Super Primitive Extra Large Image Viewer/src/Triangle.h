@@ -13,5 +13,8 @@ public:
 	void draw();
 private:
 	Vector3 vertices[3];
+	Vector3 normal;
 	Vector2 textureVerices[3];
+
+	Vector3 createNormal();
 };
