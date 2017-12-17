@@ -9,7 +9,7 @@ public:
 	Triangle(Vector3& v1, Vector3 &v2, Vector3& v3);
 	Triangle(Vector3& v1, Vector3 &v2, Vector3& v3, Vector2& tv1, Vector2& tv2, Vector2& tv3);
 	void setTextureVertices(Vector2& tv1, Vector2& tv2, Vector2& tv3);
-	std::tuple<const Vector3&, const Vector3&, const Vector3&> getVertices();
+	std::tuple<const Vector3&, const Vector3&, const Vector3&> getVertices() const;
 	void draw();
 private:
 	Vector3 vertices[3];

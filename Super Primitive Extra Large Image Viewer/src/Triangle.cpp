@@ -29,6 +29,7 @@ Triangle::Triangle(Vector3 & v1, Vector3 & v2, Vector3 & v3, Vector2 & tv1, Vect
 	this->textureVerices[0] = tv1;
 	this->textureVerices[1] = tv2;
 	this->textureVerices[2] = tv3;
+	this->normal = this->createNormal();
 }
 void Triangle::setTextureVertices(Vector2 & tv1, Vector2 & tv2, Vector2 & tv3)
 {
@@ -36,7 +37,7 @@ void Triangle::setTextureVertices(Vector2 & tv1, Vector2 & tv2, Vector2 & tv3)
 	this->textureVerices[1] = tv2;
 	this->textureVerices[2] = tv3;
 }
-std::tuple<const Vector3&, const Vector3&, const Vector3&> Triangle::getVertices()
+std::tuple<const Vector3&, const Vector3&, const Vector3&> Triangle::getVertices() const
 {
 	return { vertices[0], vertices[1], vertices[2] };
 }
