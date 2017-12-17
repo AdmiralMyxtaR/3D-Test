@@ -22,6 +22,7 @@
 #include "ScreenSpaceTransformer.h"
 #include "VerticeList.h"
 #include <algorithm>
+#include "Model.h"
 Vector2 SCREEN_SIZE(1920,1080);
 
 double FPS_UPDATE_INTERVAL= 0.3333;
@@ -49,8 +50,10 @@ int main()
 	Vector3 cameraPos(0,0,-1);
 	Vector3 cameraAngle;
 	Vector3 cameraSpeed(0,0,0);
+	Vector3 cameraAngleNormal;
+	double maxCamSpeed = 1.0/60;
 	Vector3 unit = { 1,1,1 };
-	std::vector <Triangle> polygons;
+	
 	std::vector<Building> buildings;
 	Graphics graphics;
 	std::ifstream f("e:/fc/3d/sphere.raw");
@@ -69,59 +72,65 @@ int main()
 	}*/
 	Vector3 min = Vector3(1,1,1)*INFINITY;
 	Vector3 max = -min;	
-	while (f)
+	Model sphere;
 	{
-		Vector3 v[3];
-		f >> x >> y >> z;
-		v[0] = { x,y,z };
-		f >> x >> y >> z;
-		v[1] = { x,y,z };
-		f >> x >> y >> z;
-		v[2] = { x,y,z };
-		polygons.emplace_back(v[0], v[1], v[2]);
-		for (int i = 0; i < 3; ++i)
+		std::vector <Triangle> polygons;
+		while (f)
 		{
-			min.x = std::min(min.x, v[i].x);
-			min.y = std::min(min.y, v[i].y);
-			min.z = std::min(min.z, v[i].z);
-			max.x = std::max(max.x, v[i].x);
-			max.y = std::max(max.y, v[i].y);
-			max.z = std::max(max.z, v[i].z);
+			Vector3 v[3];
+			f >> x >> y >> z;
+			v[0] = { x,y,z };
+			f >> x >> y >> z;
+			v[1] = { x,y,z };
+			f >> x >> y >> z;
+			v[2] = { x,y,z };
+			polygons.emplace_back(v[0], v[1], v[2]);
+			for (int i = 0; i < 3; ++i)
+			{
+				min.x = std::min(min.x, v[i].x);
+				min.y = std::min(min.y, v[i].y);
+				min.z = std::min(min.z, v[i].z);
+				max.x = std::max(max.x, v[i].x);
+				max.y = std::max(max.y, v[i].y);
+				max.z = std::max(max.z, v[i].z);
+			}
 		}
+		sphere = Model(Vector3(0, 0, 0), nullptr, polygons);
 	}
-	for (auto& it : polygons)
-	{
-
-	}
-	/*for (int i = 0; i < 10; ++i)
-	{
-		Vector3 pos(rand() % 100, rand() % 60, rand() % 100);
-		buildings.push_back(Building(pos, unit));
-	}*/
+	
 	SDL_Event events;
 	auto lastFrameTime = chrono::high_resolution_clock::now();
-	std::cout << polygons.size() << " triangles" << std::endl << verticeList.vertices.size() << " vertices" << std::endl << polygons.size() * 3 - verticeList.vertices.size() << " shared vertices" << endl;
+	//std::cout << polygons.size() << " triangles" << std::endl << verticeList.vertices.size() << " vertices" << std::endl << polygons.size() * 3 - verticeList.vertices.size() << " shared vertices" << endl;
 	while (true)
 	{
 		SDL_PollEvent(&events);
+		if (cameraAngle == Vector3(0, 0, 0)) cameraAngleNormal = { 1,0,0 };
+		else cameraAngleNormal = cameraAngle / cameraAngle.length();
+		SDL_Scancode& key = events.key.keysym.scancode;
+		if (key == SDL_SCANCODE_D) cameraPos += Vector3(0.01, 0, 0);
+		if (key == SDL_SCANCODE_A) cameraPos -= Vector3(0.01, 0, 0);
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_D) cameraPos += Vector3(0.01, 0, 0);
-		if (events.key.keysym.scancode == SDL_SCANCODE_A) cameraPos -= Vector3(0.01, 0, 0);
+		if (key == SDL_SCANCODE_W) cameraPos += cameraAngleNormal*maxCamSpeed;
+		if (key == SDL_SCANCODE_S) cameraPos -= cameraAngleNormal*maxCamSpeed;
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_W) cameraPos += Vector3(0, 0, 0.010);
-		if (events.key.keysym.scancode == SDL_SCANCODE_S) cameraPos -= Vector3(0, 0, 0.010);
+		if (key == SDL_SCANCODE_UP) cameraAngle += Vector3(0.0, 0, 0.01);
+		if (key == SDL_SCANCODE_DOWN) cameraAngle -= Vector3(0.0, 0, 0.01);
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_UP) cameraAngle += Vector3(0.0, 0, 0.01);
-		if (events.key.keysym.scancode == SDL_SCANCODE_DOWN) cameraAngle -= Vector3(0.0, 0, 0.01);
+		if (key == SDL_SCANCODE_LEFT) cameraAngle += Vector3(0.0, 0.01, 0.00);
+		if (key == SDL_SCANCODE_RIGHT) cameraAngle -= Vector3(0.0, 0.01, 0.00);
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_LEFT) cameraAngle += Vector3(0.0, 0.01, 0.00);
-		if (events.key.keysym.scancode == SDL_SCANCODE_RIGHT) cameraAngle -= Vector3(0.0, 0.01, 0.00);
+		if (key == SDL_SCANCODE_Z) cameraAngle += Vector3(0.01, 0.0, 0.0);
+		if (key == SDL_SCANCODE_C) cameraAngle -= Vector3(0.01, 0.00, 0.0);
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_Z) cameraAngle += Vector3(0.01, 0.0, 0.0);
-		if (events.key.keysym.scancode == SDL_SCANCODE_C) cameraAngle -= Vector3(0.01, 0.00, 0.0);
+		if (key == SDL_SCANCODE_U) cameraPos += Vector3(0.0, 0.010, 0.00);
+		if (key == SDL_SCANCODE_I) cameraPos -= Vector3(0.0, 0.01, 0.00);
 
-		if (events.key.keysym.scancode == SDL_SCANCODE_U) cameraPos += Vector3(0.0, 0.010, 0.00);
-		if (events.key.keysym.scancode == SDL_SCANCODE_I) cameraPos -= Vector3(0.0, 0.01, 0.00);
+		if (key == SDL_SCANCODE_I) sphere.addPos(Vector3(0.01, 0, 0));
+		if (key == SDL_SCANCODE_K) sphere.addPos(Vector3(-0.01, 0, 0));
+		if (key == SDL_SCANCODE_J) sphere.addPos(Vector3(0.0, 0.01, 0));
+		if (key == SDL_SCANCODE_K) sphere.addPos(Vector3(0.0, -0.01, 0));
+		if (key == SDL_SCANCODE_N) sphere.addPos(Vector3(0, 0, 0.01));
+		if (key == SDL_SCANCODE_M) sphere.addPos(Vector3(0.0, 0, -0.01));
 
 		cameraAngle.x = fmod(cameraAngle.x, 2 * M_PI);
 		cameraAngle.y = fmod(cameraAngle.y, 2 * M_PI);
@@ -135,12 +144,13 @@ int main()
 		Matrix3 rot = getRotationMatrix(cameraAngle);
 		globals::rotationMatrix = &rot;
 	//	for (auto& it : buildings) it.draw(graphics.renderer, SCREEN_SIZE.y, cameraPos, cameraAngle);
-		for (auto& it : polygons) it.draw();
+		//for (auto& it : polygons) it.draw();
+		sphere.draw();
 		graphics.flip();
 		graphics.clear();
 		//SDL_RenderPresent(graphics.renderer);
 		framesRendered++;
-		verticeList.beginNewFrame();
+		//verticeList.beginNewFrame();
 		//graphics.drawLine(Vector2(10000000, 10000000), Vector2(-10000000, -10000000),255,255,255);
 		auto currTime = chrono::high_resolution_clock::now();
 		double timeSinceLastFpsUpdate = (currTime - lastFpsUpdateTime).count()*1e-9;

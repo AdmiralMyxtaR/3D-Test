@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include <SDL\SDL.h>
+class Model;
 class Triangle
 {
 public:
@@ -11,6 +12,7 @@ public:
 	void setTextureVertices(Vector2& tv1, Vector2& tv2, Vector2& tv3);
 	std::tuple<const Vector3&, const Vector3&, const Vector3&> getVertices() const;
 	void draw();
+	void drawAsPartOfModel(Model& model);
 private:
 	Vector3 vertices[3];
 	Vector3 normal;
