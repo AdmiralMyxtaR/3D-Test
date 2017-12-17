@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(Vector3 & pos, SDL_Surface * texture, std::vector<Triangle>& polygons)
+Model::Model(Vector3 & pos, Texture& texture, std::vector<Triangle>& polygons)
 {
 	this->pos = pos;
 	this->texture = texture;
@@ -15,6 +15,11 @@ void Model::setPos(Vector3 & pos)
 Vector3 Model::getPos()
 {
 	return this->pos;
+}
+
+SDL_Surface * Model::getTexture()
+{
+	return this->texture;
 }
 
 void Model::addPos(Vector3& v)

@@ -23,6 +23,7 @@
 #include "VerticeList.h"
 #include <algorithm>
 #include "Model.h"
+#include "Texture.h"
 Vector2 SCREEN_SIZE(1920,1080);
 
 double FPS_UPDATE_INTERVAL= 0.3333;
@@ -71,9 +72,23 @@ int main()
 		buildings.push_back(Building(pos, dims));
 	}*/
 	Vector3 min = Vector3(1,1,1)*INFINITY;
-	Vector3 max = -min;	
+	Vector3 max = -min;
+	SDL_Surface* image = IMG_Load("e:/fc/img/snow_mountains_windows_10-wide.png");
+	Texture texture(image);
+
 	Model sphere;
 	{
+		int i = 0;
+		Vector2 TexVert1[] = {
+			{0,0},
+			{1.6,0},
+			{0,1},
+		};
+		Vector2 TexVert2[] = {
+			{1.6,0},
+			{1.6,1},
+			{0,1},
+		};
 		std::vector <Triangle> polygons;
 		while (f)
 		{
@@ -84,7 +99,10 @@ int main()
 			v[1] = { x,y,z };
 			f >> x >> y >> z;
 			v[2] = { x,y,z };
-			polygons.emplace_back(v[0], v[1], v[2]);
+			Triangle t(v[0], v[1], v[2]);
+			if (i % 2 == 0)	t.setTextureVertices(TexVert1[0], TexVert1[1], TexVert1[2]);
+			else t.setTextureVertices(TexVert2[0], TexVert2[1], TexVert2[2]);
+			polygons.emplace_back(t);
 			for (int i = 0; i < 3; ++i)
 			{
 				min.x = std::min(min.x, v[i].x);
@@ -94,10 +112,10 @@ int main()
 				max.y = std::max(max.y, v[i].y);
 				max.z = std::max(max.z, v[i].z);
 			}
+			++i;
 		}
-		sphere = Model(Vector3(0, 0, 0), nullptr, polygons);
+		sphere = Model(Vector3(0, 0, 0), texture, polygons);
 	}
-	
 	SDL_Event events;
 	auto lastFrameTime = chrono::high_resolution_clock::now();
 	//std::cout << polygons.size() << " triangles" << std::endl << verticeList.vertices.size() << " vertices" << std::endl << polygons.size() * 3 - verticeList.vertices.size() << " shared vertices" << endl;
@@ -146,6 +164,18 @@ int main()
 	//	for (auto& it : buildings) it.draw(graphics.renderer, SCREEN_SIZE.y, cameraPos, cameraAngle);
 		//for (auto& it : polygons) it.draw();
 		sphere.draw();
+		/* 
+		//YOU CAN ADD YOUR CUSTOM DRAW CODE HERE IN CASE YOU NEED TO DEBUG
+		for (int ___ty = 0; ___ty < 1080; ++ty)
+		{
+			for (int ___tx = 0; ___tx < 1920; ++tx)
+			{
+				Uint32 p = texture.getPixel(___tx, ___ty);
+				//p &= 0x00FFFFFF;
+				graphics.setPixel(___tx, ___ty, p);
+			}
+		}
+		*/
 		graphics.flip();
 		graphics.clear();
 		//SDL_RenderPresent(graphics.renderer);

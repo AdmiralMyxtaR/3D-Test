@@ -61,11 +61,7 @@ void Triangle::draw()
 void Triangle::drawAsPartOfModel(Model& model)
 {
 	Vector3 posOffset = model.getPos();
-	Vector3 v[3] = {
-		vertices[0] + posOffset,
-		vertices[1] + posOffset,
-		vertices[2] + posOffset,
-	};
+	Vector3 v[3] = { vertices[0] + posOffset, vertices[1] + posOffset, vertices[2] + posOffset };
 	Vector3 normal = (v[1] - v[0]).cross(v[2] - v[0]);
 	double cameraDot = normal.dot(*globals::cameraPos);
 	if (cameraDot >= 0.0)
@@ -77,6 +73,9 @@ void Triangle::drawAsPartOfModel(Model& model)
 			points[i] = globals::sst->getPixelLocation(screenSpace);
 		}
 		points[3] = points[0];
+		Vector2* sv[3] = {&points[0],&points[1],&points[2],}; //sorted vertices (in ascending Y order)
+		for (int i = 0; i < 2; ++i)	if (sv[i]->y > sv[i + 1]->y) std::swap(sv[i], sv[i + 1]);
+		
 		for (int i = 0; i < 3; ++i) globals::graphics->drawLine(points[i], points[i + 1], 255, 255, 255);
 	}
 }
