@@ -75,7 +75,7 @@ void Triangle::drawAsPartOfModel(Model& model)
 		points[3] = points[0];
 		Vector2* sv[3] = {&points[0],&points[1],&points[2],}; //sorted vertices (in ascending Y order)
 		for (int i = 0; i < 2; ++i)	if (sv[i]->y > sv[i + 1]->y) std::swap(sv[i], sv[i + 1]);
-		
+		Vector3 splittingVertice;
 		for (int i = 0; i < 3; ++i) globals::graphics->drawLine(points[i], points[i + 1], 255, 255, 255);
 	}
 }

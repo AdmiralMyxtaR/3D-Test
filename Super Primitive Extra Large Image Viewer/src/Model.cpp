@@ -17,7 +17,7 @@ Vector3 Model::getPos()
 	return this->pos;
 }
 
-SDL_Surface * Model::getTexture()
+const Texture& Model::getTexture()
 {
 	return this->texture;
 }

@@ -9,7 +9,7 @@ public:
 	Model(Vector3& pos, Texture& texture, std::vector<Triangle>& polygons);
 	
 	Vector3 getPos();
-	SDL_Surface* getTexture();
+	const Texture& getTexture();
 
 	void setPos(Vector3& pos);
 	void addPos(Vector3& v);

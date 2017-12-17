@@ -48,8 +48,8 @@ int main()
 	cout << TTF_GetError();
 	string fpsString, pxRateString;
 	auto lastFpsUpdateTime = chrono::high_resolution_clock::now();
-	Vector3 cameraPos(0,0,-1);
-	Vector3 cameraAngle;
+	Vector3 cameraPos(-40,2,1);
+	Vector3 cameraAngle(0, -1.71, -0.17);
 	Vector3 cameraSpeed(0,0,0);
 	Vector3 cameraAngleNormal;
 	double maxCamSpeed = 1.0/60;
