@@ -11,6 +11,8 @@ Graphics::Graphics()
 	this->windowSize = { windowSurface->clip_rect.w, windowSurface->clip_rect.h };
 	this->fov = M_PI;
 	globals::fov = &this->fov;
+	zbuffer = ZBuffer(windowSize.x, windowSize.y);
+	globals::zbuffer = &zbuffer;
 }
 
 void Graphics::setPixel(uint16_t x, uint16_t y, Uint8 r, Uint8 g, Uint8 b)

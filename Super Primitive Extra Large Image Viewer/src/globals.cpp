@@ -8,4 +8,5 @@ namespace globals
 	VerticeList* verticeList;
 	double* fov;
 	Matrix3* rotationMatrix;
+	ZBuffer* zbuffer;
 }

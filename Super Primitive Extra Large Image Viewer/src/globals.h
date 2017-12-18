@@ -3,6 +3,7 @@ class Graphics;
 class ScreenSpaceTransformer;
 class VerticeList;
 struct Matrix3;
+class ZBuffer;
 #include "Vector3.h"
 #include "Matrix3.h"
 namespace globals
@@ -13,5 +14,6 @@ namespace globals
 	extern Vector3* cameraAngle;
 	extern VerticeList* verticeList;
 	extern Matrix3* rotationMatrix;
+	extern ZBuffer* zbuffer;
 	extern double* fov;
 }

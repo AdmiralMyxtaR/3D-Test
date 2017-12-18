@@ -5,6 +5,10 @@ ZBuffer::ZBuffer(int width, int height)
 	this->pixels = nullptr;
 	this->rebuild(width, height);
 }
+ZBuffer::~ZBuffer()
+{
+	if (this->pixels != nullptr) delete[] pixels;
+}
 bool ZBuffer::TestAndSet(int x, int y, double value)
 {
 	double rec = 1.0 / value;

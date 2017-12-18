@@ -2,7 +2,9 @@
 class ZBuffer
 {
 public:
+	ZBuffer() = default;
 	ZBuffer(int width, int height);
+	~ZBuffer();
 	//returns true if the pixel should be drawn
 	bool TestAndSet(int x, int y, double value);
 	void clear();

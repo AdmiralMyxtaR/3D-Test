@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL\SDL.h>
 #include "Vector2.h"
+#include "ZBuffer.h"
 class Graphics
 {
 public:
@@ -23,5 +24,6 @@ private:
 	SDL_Window* window;
 	SDL_Surface* windowSurface;
 	Uint32 composeColor(Uint8 r, Uint8 g, Uint8 b);
+	ZBuffer zbuffer;
 //	Matrix3 rotationMatrix;
 };
