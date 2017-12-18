@@ -143,6 +143,7 @@
     <ClCompile Include="src\Vector3.cpp" />
     <ClCompile Include="src\Vector4.cpp" />
     <ClCompile Include="src\VerticeList.cpp" />
+    <ClCompile Include="src\ZBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Algorithms.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="src\Vector3.h" />
     <ClInclude Include="src\Vector4.h" />
     <ClInclude Include="src\VerticeList.h" />
+    <ClInclude Include="src\ZBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
