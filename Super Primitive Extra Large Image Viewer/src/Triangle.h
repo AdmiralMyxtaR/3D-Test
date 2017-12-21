@@ -19,4 +19,6 @@ private:
 	Vector2 textureVerices[3];
 
 	Vector3 createNormal();
+	void drawFlatBottom(Model& model, Vector2& v1, Vector2& v2, Vector2& v3);
+	void drawFlatTop(Model& model, Vector2& v1, Vector2& v2, Vector2& v3);
 };
