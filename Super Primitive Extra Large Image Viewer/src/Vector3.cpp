@@ -34,6 +34,16 @@ Vector3 Vector3::operator/(Vector3 & other)
 	return Vector3(this->x / other.x, this->y / other.y, this->z / other.z);
 }
 
+Vector3 Vector3::operator+(double rhs)
+{
+	return Vector3(x + rhs, y + rhs, z + rhs);
+}
+
+Vector3 Vector3::operator-(double rhs)
+{
+	return Vector3(x - rhs, y - rhs, z - rhs);
+}
+
 Vector3 Vector3::operator*(double mult)
 {
 	return Vector3(this->x*mult, this->y*mult, this->z*mult);
@@ -41,7 +51,8 @@ Vector3 Vector3::operator*(double mult)
 
 Vector3 Vector3::operator/(double div)
 {
-	return Vector3(this->x / div, this->y / div, this->z / div);
+	double rec = 1.0 / div;
+	return Vector3(x*rec, y*rec, z*rec);
 }
 
 void Vector3::operator*=(Vector3 & other)
@@ -51,11 +62,11 @@ void Vector3::operator*=(Vector3 & other)
 	this->z *= other.z;
 }
 
-void Vector3::operator*=(double m)
+void Vector3::operator*=(double mul)
 {
-	this->x *= m;
-	this->y *= m;
-	this->z *= m;
+	this->x *= mul;
+	this->y *= mul;
+	this->z *= mul;
 }
 
 void Vector3::operator+=(Vector3 & other)
@@ -65,6 +76,20 @@ void Vector3::operator+=(Vector3 & other)
 	this->z += other.z;
 }
 
+void Vector3::operator+=(double add)
+{
+	x += add;
+	y += add;
+	z += add;
+}
+
+void Vector3::operator-=(double sub)
+{
+	x -= sub;
+	y -= sub;
+	z -= sub;
+}
+
 void Vector3::operator/=(Vector3 & other)
 {
 	this->x /= other.x;
@@ -72,11 +97,12 @@ void Vector3::operator/=(Vector3 & other)
 	this->z /= other.z;
 }
 
-void Vector3::operator/=(double d)
+void Vector3::operator/=(double div)
 {
-	this->x /= d;
-	this->y /= d;
-	this->z /= d;
+	double m = 1.0 / div;
+	x *= m;
+	y *= m;
+	z *= m;
 }
 
 void Vector3::operator-=(Vector3 & other)
